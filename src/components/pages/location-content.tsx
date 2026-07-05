@@ -1,7 +1,10 @@
+import Link from "next/link";
 import { MapPin, MessageCircle, Phone, ShieldCheck, Truck } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 import { CtaSection } from "@/components/blocks/cta-section";
 import { FaqSection } from "@/components/blocks/faq-section";
+import { ProcessSteps } from "@/components/blocks/process-steps";
 import { ServiceCard } from "@/components/blocks/service-card";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -12,7 +15,7 @@ import {
   PHONE_HREF,
   whatsappHref,
 } from "@/data/business";
-import type { Location } from "@/data/locations";
+import { LOCATIONS, type Location } from "@/data/locations";
 import { getService } from "@/data/services";
 import { faqPageSchema } from "@/lib/schema";
 import { absoluteUrl, SITE_URL } from "@/lib/seo";
@@ -112,6 +115,18 @@ export function LocationContent({ location }: { location: Location }) {
         </div>
       </section>
 
+      {/* Uzun-kuyruk içerik blokları */}
+      <section className="mx-auto max-w-3xl px-4 pb-14">
+        {location.deepDives.map((dive) => (
+          <article key={dive.title} className="mt-10 first:mt-0">
+            <h2 className="text-2xl font-bold tracking-tight">{dive.title}</h2>
+            <div className="mt-4 space-y-4 text-[0.95rem] leading-7 text-foreground/90 [&_a]:font-medium [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4">
+              <ReactMarkdown>{dive.bodyMd}</ReactMarkdown>
+            </div>
+          </article>
+        ))}
+      </section>
+
       {/* Öne çıkan hizmetler */}
       <section className="border-y border-border bg-muted/40">
         <div className="mx-auto max-w-6xl px-4 py-14">
@@ -126,10 +141,41 @@ export function LocationContent({ location }: { location: Location }) {
         </div>
       </section>
 
-      <FaqSection
-        faqs={location.faqs}
-        heading={`${location.name} için sık sorulanlar`}
+      <ProcessSteps
+        heading={`${location.name}'dan cihaz teslimi nasıl işliyor?`}
+        steps={location.pickupSteps}
       />
+
+      <div className="border-t border-border">
+        <FaqSection
+          faqs={location.faqs}
+          heading={`${location.name} için sık sorulanlar`}
+        />
+      </div>
+
+      {/* Diğer hizmet bölgeleri */}
+      <nav
+        aria-label="Diğer hizmet bölgeleri"
+        className="border-t border-border bg-muted/40"
+      >
+        <div className="mx-auto max-w-6xl px-4 py-8">
+          <h2 className="text-sm font-semibold">
+            Alanya&apos;da hizmet verdiğimiz diğer bölgeler
+          </h2>
+          <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
+            {LOCATIONS.filter((l) => l.slug !== location.slug).map((l) => (
+              <li key={l.slug}>
+                <Link
+                  href={`/${l.slug}`}
+                  className="text-sm text-muted-foreground hover:text-primary"
+                >
+                  {l.name} Bilgisayar Tamiri
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </nav>
 
       <CtaSection
         heading={`${location.name}'dan bize ulaşın`}
