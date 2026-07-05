@@ -7,6 +7,7 @@ import {
   PHONE_HREF,
   whatsappHref,
 } from "@/data/business";
+import { LOCATIONS } from "@/data/locations";
 import { SERVICES } from "@/data/services";
 import { NAV_LINKS } from "@/lib/nav";
 
@@ -153,6 +154,24 @@ export function SiteFooter() {
           </address>
         </div>
       </div>
+
+      <nav
+        aria-label="Hizmet bölgeleri"
+        className="border-t border-border"
+      >
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-5 gap-y-2 px-4 py-4">
+          <h2 className="text-xs font-semibold">Hizmet Bölgeleri:</h2>
+          {LOCATIONS.map((location) => (
+            <Link
+              key={location.slug}
+              href={`/${location.slug}`}
+              className="text-xs text-muted-foreground hover:text-foreground"
+            >
+              {location.name} Bilgisayar Tamiri
+            </Link>
+          ))}
+        </div>
+      </nav>
 
       <div className="border-t border-border">
         <p className="mx-auto max-w-6xl px-4 py-4 text-xs text-muted-foreground">

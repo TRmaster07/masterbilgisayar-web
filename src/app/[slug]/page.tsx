@@ -11,7 +11,9 @@ import {
 } from "lucide-react";
 
 import { CtaSection } from "@/components/blocks/cta-section";
+import { LocationContent } from "@/components/pages/location-content";
 import { JsonLd } from "@/components/seo/json-ld";
+import { getLocation, LOCATIONS } from "@/data/locations";
 import { faqPageSchema, serviceSchema } from "@/lib/schema";
 import { FaqSection } from "@/components/blocks/faq-section";
 import { ProcessSteps } from "@/components/blocks/process-steps";
@@ -26,11 +28,28 @@ type Props = { params: Promise<{ slug: string }> };
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return SERVICES.map((service) => ({ slug: service.slug }));
+  return [
+    ...SERVICES.map((service) => ({ slug: service.slug })),
+    ...LOCATIONS.map((location) => ({ slug: location.slug })),
+  ];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  const location = getLocation(slug);
+  if (location) {
+    return {
+      title: { absolute: location.metaTitle },
+      description: location.metaDescription,
+      alternates: { canonical: `/${location.slug}` },
+      openGraph: {
+        title: location.metaTitle,
+        description: location.metaDescription,
+        url: `/${location.slug}`,
+        type: "website",
+      },
+    };
+  }
   const service = getService(slug);
   if (!service) return {};
   return {
@@ -50,6 +69,10 @@ const PRICE_FORMATTER = new Intl.NumberFormat("tr-TR");
 
 export default async function ServicePage({ params }: Props) {
   const { slug } = await params;
+
+  const location = getLocation(slug);
+  if (location) return <LocationContent location={location} />;
+
   const service = getService(slug);
   if (!service) notFound();
 

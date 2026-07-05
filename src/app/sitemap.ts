@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 
+import { LOCATIONS } from "@/data/locations";
 import { POSTS } from "@/data/posts";
 import { SERVICES } from "@/data/services";
 import { absoluteUrl } from "@/lib/seo";
@@ -33,5 +34,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticEntries, ...serviceEntries, ...postEntries];
+  const locationEntries = LOCATIONS.map((location) => ({
+    url: absoluteUrl(`/${location.slug}`),
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  return [
+    ...staticEntries,
+    ...serviceEntries,
+    ...locationEntries,
+    ...postEntries,
+  ];
 }
