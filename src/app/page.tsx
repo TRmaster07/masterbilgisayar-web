@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   BadgeCheck,
-  Clock,
+  MapPin,
   MessageCircle,
   Phone,
   ShieldCheck,
@@ -30,11 +30,12 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-const HERO_TRUST_ITEMS = [
-  { icon: Star, label: `Google'da ${BUSINESS.rating.value} puan` },
-  { icon: ShieldCheck, label: "1 yıl garanti" },
-  { icon: BadgeCheck, label: "Ücretsiz arıza tespiti" },
-  { icon: Clock, label: "Aynı gün teslim imkânı" },
+/** Hero altındaki istatistik şeridi — puan kartıyla tekrar etmeyen değerler */
+const HERO_STATS = [
+  { value: "Ücretsiz", label: "Arıza tespiti" },
+  { value: `${BUSINESS.warrantyMonths / 12} yıl`, label: "Garanti süresi" },
+  { value: "Aynı gün", label: "Teslim imkânı" },
+  { value: "Çip seviyesi", label: "Anakart onarımı" },
 ] as const;
 
 const HOME_PROCESS_STEPS = [
@@ -63,102 +64,125 @@ const HOME_PROCESS_STEPS = [
 export default function HomePage() {
   return (
     <main className="flex-1">
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-primary/5 to-background">
-        {/* Devre kartı hissi veren nokta deseni — dekoratif, tıklamayı engellemez */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 [background-image:radial-gradient(circle,oklch(0.45_0.17_258/0.13)_1px,transparent_1px)] [background-size:22px_22px] [mask-image:linear-gradient(to_bottom,black,transparent_75%)]"
-        />
-        <div className="relative mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:py-20 lg:grid-cols-[1fr_20rem] lg:items-center">
-          <div>
-            <p className="text-sm font-semibold text-primary">
-              {BUSINESS.address.district} / {BUSINESS.address.city} —{" "}
-              {BUSINESS.slogan}
-            </p>
-            <h1 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight sm:text-5xl">
-              Alanya Bilgisayar Tamiri ve Teknik Servis
-            </h1>
-            <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-              Laptop, masaüstü, MacBook ve oyun konsollarınızı komponent
-              seviyesinde onarıyoruz. Arıza tespiti ücretsiz, tüm işlemler{" "}
-              {BUSINESS.warrantyMonths / 12} yıl garantili.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild size="lg" className="h-12 px-6 text-base">
-                <a href={PHONE_HREF} data-cta="call">
-                  <Phone aria-hidden /> Hemen Ara: {BUSINESS.phoneDisplay}
-                </a>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                className="h-12 bg-whatsapp px-6 text-base text-whatsapp-foreground hover:bg-whatsapp/85"
-              >
+      {/* Hero — koyu lacivert zemin, ışıma ve devre deseniyle derinlik */}
+      <section className="relative overflow-hidden bg-[oklch(0.21_0.05_262)] text-white">
+        {/* Dekoratif katmanlar: köşe ışımaları + devre kartı nokta deseni */}
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <div className="absolute -top-48 right-[-12%] size-[38rem] rounded-full bg-[oklch(0.45_0.17_258/0.4)] blur-3xl" />
+          <div className="absolute -bottom-56 left-[-16%] size-[34rem] rounded-full bg-[oklch(0.45_0.17_258/0.25)] blur-3xl" />
+          <div className="absolute inset-0 [background-image:radial-gradient(circle,oklch(1_0_0/0.07)_1px,transparent_1px)] [background-size:24px_24px] [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" />
+        </div>
+
+        <div className="relative mx-auto max-w-6xl px-4">
+          <div className="grid gap-12 pt-16 pb-12 sm:pt-20 lg:grid-cols-[1fr_20rem] lg:items-center">
+            <div>
+              <p className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-semibold sm:text-sm">
+                <MapPin aria-hidden className="size-3.5 text-sky-300" />
+                {BUSINESS.address.district} / {BUSINESS.address.city}
+                <span aria-hidden className="text-white/40">
+                  •
+                </span>
+                <span className="text-sky-300">{BUSINESS.slogan}</span>
+              </p>
+              <h1 className="mt-6 max-w-3xl text-4xl font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl">
+                Alanya Bilgisayar Tamiri ve{" "}
+                <span className="bg-gradient-to-r from-sky-300 to-blue-400 bg-clip-text text-transparent">
+                  Teknik Servis
+                </span>
+              </h1>
+              <p className="mt-5 max-w-2xl text-lg text-white/70">
+                Laptop, masaüstü, MacBook ve oyun konsollarınızı komponent
+                seviyesinde onarıyoruz. Arıza tespiti ücretsiz, tüm işlemler{" "}
+                {BUSINESS.warrantyMonths / 12} yıl garantili.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button
+                  asChild
+                  size="lg"
+                  className="h-12 bg-white px-6 text-base text-[oklch(0.21_0.05_262)] hover:bg-white/90"
+                >
+                  <a href={PHONE_HREF} data-cta="call">
+                    <Phone aria-hidden /> Hemen Ara: {BUSINESS.phoneDisplay}
+                  </a>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  className="h-12 bg-whatsapp px-6 text-base text-whatsapp-foreground hover:bg-whatsapp/85"
+                >
+                  <a
+                    href={whatsappHref(
+                      "Merhaba, cihazım için ücretsiz arıza tespiti istiyorum.",
+                    )}
+                    target="_blank"
+                    rel="noopener"
+                    data-cta="whatsapp"
+                  >
+                    <MessageCircle aria-hidden /> WhatsApp&apos;tan Yaz
+                  </a>
+                </Button>
+              </div>
+              <p className="mt-4 flex items-center gap-2 text-sm text-white/60">
+                <BadgeCheck aria-hidden className="size-4 shrink-0 text-sky-300" />
+                Arıza tespiti ücretsiz — net fiyat, onarım öncesi bildirilir.
+              </p>
+            </div>
+
+            {/* Güven kartı — cam efekti, arkasında ışıma */}
+            <aside className="relative">
+              <div
+                aria-hidden
+                className="absolute -inset-4 rounded-3xl bg-[oklch(0.45_0.17_258/0.3)] blur-2xl"
+              />
+              <div className="relative rounded-2xl border border-white/10 bg-white/[0.06] p-6 shadow-2xl backdrop-blur">
+                <p className="text-5xl font-bold tracking-tight">
+                  {BUSINESS.rating.value}
+                  <span className="text-2xl text-white/50">/5</span>
+                </p>
+                <div
+                  aria-hidden
+                  className="mt-2 flex items-center gap-0.5 text-amber-400"
+                >
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="size-5 fill-current" />
+                  ))}
+                </div>
+                <p className="mt-2 text-sm text-white/70">
+                  Google&apos;da {BUSINESS.rating.count}+ gerçek müşteri yorumu
+                </p>
                 <a
-                  href={whatsappHref(
-                    "Merhaba, cihazım için ücretsiz arıza tespiti istiyorum.",
-                  )}
+                  href={REVIEWS_HREF}
                   target="_blank"
                   rel="noopener"
-                  data-cta="whatsapp"
+                  className="mt-3 inline-block text-sm font-medium text-sky-300 hover:underline"
                 >
-                  <MessageCircle aria-hidden /> WhatsApp&apos;tan Yaz
+                  Yorumları okuyun →
                 </a>
-              </Button>
-            </div>
-            <ul className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {HERO_TRUST_ITEMS.map((item) => (
-                <li
-                  key={item.label}
-                  className="flex items-center gap-2 text-sm font-medium"
-                >
-                  <item.icon
-                    aria-hidden
-                    className="size-4 shrink-0 text-primary"
-                  />
-                  {item.label}
-                </li>
-              ))}
-            </ul>
+                <div className="mt-5 space-y-3 border-t border-white/10 pt-5 text-sm font-medium">
+                  <p className="flex items-center gap-2">
+                    <ShieldCheck aria-hidden className="size-4 text-sky-300" />
+                    Tüm işlemler {BUSINESS.warrantyMonths / 12} yıl garantili
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <BadgeCheck aria-hidden className="size-4 text-sky-300" />
+                    Arıza tespiti ücretsiz
+                  </p>
+                </div>
+              </div>
+            </aside>
           </div>
 
-          {/* Güven kartı */}
-          <aside className="rounded-2xl border border-border bg-card/80 p-6 shadow-sm backdrop-blur">
-            <p className="text-5xl font-bold tracking-tight">
-              {BUSINESS.rating.value}
-              <span className="text-2xl text-muted-foreground">/5</span>
-            </p>
-            <div
-              aria-hidden
-              className="mt-2 flex items-center gap-0.5 text-amber-400"
-            >
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="size-5 fill-current" />
-              ))}
-            </div>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Google&apos;da {BUSINESS.rating.count}+ gerçek müşteri yorumu
-            </p>
-            <a
-              href={REVIEWS_HREF}
-              target="_blank"
-              rel="noopener"
-              className="mt-3 inline-block text-sm font-medium text-primary hover:underline"
-            >
-              Yorumları okuyun →
-            </a>
-            <div className="mt-5 space-y-3 border-t border-border pt-5 text-sm font-medium">
-              <p className="flex items-center gap-2">
-                <ShieldCheck aria-hidden className="size-4 text-primary" />
-                Tüm işlemler {BUSINESS.warrantyMonths / 12} yıl garantili
-              </p>
-              <p className="flex items-center gap-2">
-                <BadgeCheck aria-hidden className="size-4 text-primary" />
-                Arıza tespiti ücretsiz
-              </p>
-            </div>
-          </aside>
+          {/* İstatistik şeridi */}
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-8 border-t border-white/10 py-8 sm:grid-cols-4">
+            {HERO_STATS.map((stat) => (
+              <div key={stat.label} className="flex flex-col-reverse">
+                <dt className="mt-1 text-sm text-white/60">{stat.label}</dt>
+                <dd className="text-2xl font-bold tracking-tight sm:text-3xl">
+                  {stat.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 
