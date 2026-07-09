@@ -9,8 +9,10 @@ import {
   Star,
 } from "lucide-react";
 
+import { BrandMarquee } from "@/components/blocks/brand-marquee";
 import { CtaSection } from "@/components/blocks/cta-section";
 import { FaqSection } from "@/components/blocks/faq-section";
+import { HeroCircuit } from "@/components/blocks/hero-circuit";
 import { ProcessSteps } from "@/components/blocks/process-steps";
 import { ServiceCard } from "@/components/blocks/service-card";
 import { Button } from "@/components/ui/button";
@@ -64,13 +66,16 @@ const HOME_PROCESS_STEPS = [
 export default function HomePage() {
   return (
     <main className="flex-1">
+      {/* Ana sayfa baştan sona koyu tema — .dark ile tüm semantik tokenlar laciverte döner */}
+      <div className="dark bg-background text-foreground">
       {/* Hero — koyu lacivert zemin, ışıma ve devre deseniyle derinlik */}
-      <section className="relative overflow-hidden bg-[oklch(0.21_0.05_262)] text-white">
-        {/* Dekoratif katmanlar: köşe ışımaları + devre kartı nokta deseni */}
+      <section className="relative overflow-hidden text-white">
+        {/* Dekoratif katmanlar: köşe ışımaları + devre deseni + çip illüstrasyonu */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div className="absolute -top-48 right-[-12%] size-[38rem] rounded-full bg-[oklch(0.45_0.17_258/0.4)] blur-3xl" />
           <div className="absolute -bottom-56 left-[-16%] size-[34rem] rounded-full bg-[oklch(0.45_0.17_258/0.25)] blur-3xl" />
           <div className="absolute inset-0 [background-image:radial-gradient(circle,oklch(1_0_0/0.07)_1px,transparent_1px)] [background-size:24px_24px] [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" />
+          <HeroCircuit className="absolute top-[44%] right-[-5rem] hidden w-[30rem] -translate-y-1/2 opacity-45 xl:block" />
         </div>
 
         <div className="relative mx-auto max-w-6xl px-4">
@@ -173,7 +178,7 @@ export default function HomePage() {
           </div>
 
           {/* İstatistik şeridi */}
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-8 border-t border-white/10 py-8 sm:grid-cols-4">
+          <dl className="reveal grid grid-cols-2 gap-x-6 gap-y-8 border-t border-white/10 py-8 sm:grid-cols-4">
             {HERO_STATS.map((stat) => (
               <div key={stat.label} className="flex flex-col-reverse">
                 <dt className="mt-1 text-sm text-white/60">{stat.label}</dt>
@@ -186,9 +191,12 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Kayan marka bandı */}
+      <BrandMarquee />
+
       {/* Hizmetler */}
       <section className="mx-auto max-w-6xl px-4 py-14">
-        <div className="flex items-end justify-between gap-4">
+        <div className="reveal flex items-end justify-between gap-4">
           <div>
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
               Hizmetlerimiz
@@ -207,19 +215,21 @@ export default function HomePage() {
         </div>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICES.map((service) => (
-            <ServiceCard key={service.slug} service={service} />
+            <div key={service.slug} className="reveal h-full">
+              <ServiceCard service={service} />
+            </div>
           ))}
         </div>
       </section>
 
       {/* Süreç */}
-      <div className="border-y border-border bg-muted/40">
+      <div className="reveal border-y border-border bg-muted/40">
         <ProcessSteps heading="Nasıl çalışıyoruz?" steps={HOME_PROCESS_STEPS} />
       </div>
 
-      {/* Sosyal kanıt — koyu lacivert bant */}
-      <section className="bg-[oklch(0.24_0.05_258)] text-white">
-        <div className="mx-auto max-w-6xl px-4 py-16 text-center">
+      {/* Sosyal kanıt bandı */}
+      <section className="border-b border-border bg-white/[0.04] text-white">
+        <div className="reveal mx-auto max-w-6xl px-4 py-16 text-center">
           <div
             aria-hidden
             className="mx-auto flex w-fit items-center gap-1 text-amber-400"
@@ -251,8 +261,9 @@ export default function HomePage() {
       </section>
 
       {/* SSS */}
-      <div className="border-t border-border">
+      <div className="reveal">
         <FaqSection faqs={GENERAL_FAQS} />
+      </div>
       </div>
 
       <CtaSection />

@@ -6,6 +6,7 @@ import { Clarity } from "@/components/analytics/clarity";
 import { ConsentBanner } from "@/components/analytics/consent-banner";
 import { CtaTracker } from "@/components/analytics/cta-tracker";
 import { GoogleTagManager } from "@/components/analytics/gtm";
+import { FloatingWhatsapp } from "@/components/layout/floating-whatsapp";
 import { MobileCtaBar } from "@/components/layout/mobile-cta-bar";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -58,6 +59,7 @@ export default function RootLayout({
         {children}
         <SiteFooter />
         <MobileCtaBar />
+        <FloatingWhatsapp />
         <GoogleTagManager />
         <Clarity />
         <ConsentBanner />

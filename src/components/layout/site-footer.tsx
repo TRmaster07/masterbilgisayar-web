@@ -32,7 +32,7 @@ function formatDays(days: readonly string[]): string {
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-muted/40">
+    <footer className="dark border-t border-border bg-background text-foreground">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <p className="text-lg font-bold tracking-tight">
