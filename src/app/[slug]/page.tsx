@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import ReactMarkdown from "react-markdown";
 import {
   AlertTriangle,
   BadgeCheck,
@@ -208,6 +209,18 @@ export default async function ServicePage({ params }: Props) {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* Uzun-kuyruk içerik blokları */}
+      <section className="mx-auto max-w-3xl px-4 pb-14">
+        {service.deepDives.map((dive) => (
+          <article key={dive.title} className="mt-10 first:mt-0">
+            <h2 className="text-2xl font-bold tracking-tight">{dive.title}</h2>
+            <div className="mt-4 space-y-4 text-[0.95rem] leading-7 text-foreground/90 [&_a]:font-medium [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4">
+              <ReactMarkdown>{dive.bodyMd}</ReactMarkdown>
+            </div>
+          </article>
+        ))}
       </section>
 
       {/* Süreç */}

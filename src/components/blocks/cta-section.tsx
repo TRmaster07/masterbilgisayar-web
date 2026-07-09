@@ -13,17 +13,18 @@ export function CtaSection({
   whatsappMessage?: string;
 }) {
   return (
-    <section className="bg-primary">
+    // Koyu temada da kraliyet mavisi kalması için renkler sabitlendi
+    <section className="bg-[oklch(0.45_0.17_258)]">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-5 px-4 py-14 text-center">
-        <h2 className="text-2xl font-bold tracking-tight text-primary-foreground sm:text-3xl">
+        <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
           {heading}
         </h2>
-        <p className="max-w-xl text-primary-foreground/85">{description}</p>
+        <p className="max-w-xl text-white/85">{description}</p>
         <div className="flex flex-wrap justify-center gap-3">
           <Button
             asChild
             size="lg"
-            className="bg-background text-foreground hover:bg-background/90"
+            className="bg-white text-[oklch(0.21_0.05_262)] hover:bg-white/90"
           >
             <a href={PHONE_HREF} data-cta="call">
               <Phone aria-hidden /> {BUSINESS.phoneDisplay}

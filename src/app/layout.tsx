@@ -52,7 +52,8 @@ export default function RootLayout({
       lang="tr"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col pb-14 md:pb-0">
+      {/* Site genelinde koyu lacivert tema — .dark paleti globals.css'te */}
+      <body className="dark min-h-full flex flex-col bg-background text-foreground pb-14 md:pb-0">
         <JsonLd data={localBusinessSchema()} />
         <JsonLd data={webSiteSchema()} />
         <SiteHeader />
